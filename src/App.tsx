@@ -1,24 +1,26 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React from "react";
+import "./App.css";
+import { PDFViewer } from "@react-pdf/renderer";
+import PdfRenderComponent from "./components/PdfRenderComponent";
+import ContentFormComponent from "./components/ContentForm";
+import useDataStore from "./store/dataStore";
 
 function App() {
+  const { header } = useDataStore();
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <header></header>
+      <main className="flex w-full h-screen">
+        <div className="flex w-full h-screen">
+          <ContentFormComponent />
+        </div>
+        <div className="flex w-full">
+          <PDFViewer style={{ flex: 1 }} showToolbar>
+            <PdfRenderComponent sections={[]} header={header} />
+          </PDFViewer>
+        </div>
+      </main>
     </div>
   );
 }
