@@ -45,7 +45,7 @@ const Auth: NextPage = ({ providers }: any) => {
               onClick={() => {
                 console.log(provider);
                 signIn(provider.id, {
-                  callbackUrl: `https://vercel.com/filali-anass/pdfgenerator/api/auth/callback/google`,
+                  callbackUrl: `https://pdfgenerator-opal.vercel.app/api/auth/callback/google`,
                 });
               }}
             >

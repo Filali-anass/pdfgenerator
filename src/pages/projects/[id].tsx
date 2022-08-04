@@ -4,7 +4,7 @@ import { IProject } from "../../model/Project";
 
 export async function getServerSideProps(context: any) {
   const res = await fetch(
-    `https://vercel.com/filali-anass/pdfgenerator/api/projects/${context.params.id}`,
+    `https://pdfgenerator-opal.vercel.app/api/projects/${context.params.id}`,
     {
       headers: {
         Cookie: Object.entries(context.req.cookies).reduce((acc, e, index) => {
