@@ -25,31 +25,31 @@ const Auth = ({
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const ProvidersButtons = ({ providers }: any) => (
-    //  Record<LiteralUnion<BuiltInProviderType, string>, ClientSafeProvider>
-    <div className="flex-col">
-      {Object.values(providers).map(
-        (
-          provider: any
-          // ClientSafeProvider
-        ) =>
-          provider.name !== "Credentials" && (
-            <button
-              key={provider.name}
-              type="submit"
-              onClick={() => {
-                console.log(provider);
-                signIn(provider.id, {
-                  callbackUrl: provider.callbackUrl,
-                });
-              }}
-            >
-              Sign in with {provider.name}
-            </button>
-          )
-      )}
-    </div>
-  );
+  // const ProvidersButtons = ({ providers }: any) => (
+  //   //  Record<LiteralUnion<BuiltInProviderType, string>, ClientSafeProvider>
+  //   <div className="flex-col">
+  //     {Object.values(providers).map(
+  //       (
+  //         provider: any
+  //         // ClientSafeProvider
+  //       ) =>
+  //         provider.name !== "Credentials" && (
+  //           <button
+  //             key={provider.name}
+  //             type="submit"
+  //             onClick={() => {
+  //               console.log(provider);
+  //               signIn(provider.id, {
+  //                 callbackUrl: provider.callbackUrl,
+  //               });
+  //             }}
+  //           >
+  //             Sign in with {provider.name}
+  //           </button>
+  //         )
+  //     )}
+  //   </div>
+  // );
 
   const redirectToHome = () => {
     const { pathname } = Router;
@@ -221,7 +221,8 @@ const Auth = ({
           <div className="w-full justify-center items-center pt-8">
             <p className="text-center"> Or Continue with</p>
           </div>
-          <ProvidersButtons providers={providers} />
+          {/* <ProvidersButtons providers={providers} /> */}
+          {providers && <p>{JSON.stringify(providers)}</p>}
         </div>
       </div>
       <div className="hidden md:flex md:w-full md:h-screen">
