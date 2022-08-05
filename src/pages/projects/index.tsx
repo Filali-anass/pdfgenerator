@@ -7,7 +7,15 @@ export async function getServerSideProps(context: any) {
   console.log({ host: context.req.headers.host, cookies: context.req.cookies });
   const res = await fetch(`http://${context.req.headers.host}/api/projects`, {
     headers: {
-      Cookie: `next-auth.session-token=${context.req.cookies["next-auth.session-token"]}`,
+      Cookie: Object.entries(context.req.cookies).reduce((acc, e, index) => {
+        // key + "=" + value
+        const [key, value] = e;
+        if (index == 0) {
+          return acc + key + "=" + value;
+        } else {
+          return acc + "; " + key + "=" + value;
+        }
+      }, ""),
     },
   });
   const data = await res.json();

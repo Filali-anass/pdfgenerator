@@ -8,7 +8,15 @@ export async function getServerSideProps(context: any) {
     `http://${context.req.headers.host}/api/projects/${context.params.id}`,
     {
       headers: {
-        Cookie: `next-auth.session-token=${context.req.cookies["next-auth.session-token"]}`,
+        Cookie: Object.entries(context.req.cookies).reduce((acc, e, index) => {
+          // key + "=" + value
+          const [key, value] = e;
+          if (index == 0) {
+            return acc + key + "=" + value;
+          } else {
+            return acc + "; " + key + "=" + value;
+          }
+        }, ""),
       },
     }
   );
