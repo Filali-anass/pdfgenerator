@@ -17,7 +17,7 @@ export default async function handler(
   // validate if it is a GET
   if (req.method !== "GET") {
     return res
-      .status(200)
+      .status(404)
       .json({ error: "This API call only accepts POST methods" });
   }
 

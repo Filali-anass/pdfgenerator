@@ -1,7 +1,7 @@
-import Image from "next/image";
-import Link from "next/link";
 import React from "react";
+import Link from "next/link";
 import { IProject } from "../../model/Project";
+import { ListItem } from "./ListItem";
 
 export default function Projects({ projects }: { projects: IProject[] }) {
   return (
@@ -16,15 +16,13 @@ export default function Projects({ projects }: { projects: IProject[] }) {
       </div>
       <div className="grid grid-cols-4 gap-8  sm:grid-cols-8 lg:grid-cols-12 sm:px-8 xl:px-0 p-6">
         {projects.map(({ _id, image, name, description }) => (
-          <Link key={_id} href={`/projects/${_id}`}>
-            <div className="relative flex flex-col items-center justify-between col-span-4 px-8 py-12 space-y-4 overflow-hidden bg-gray-100 sm:rounded-xl cursor-pointer">
-              <Image src={image} alt="" width={50} height={50} />
-              <h4 className="text-xl font-medium text-gray-700">{name}</h4>
-              <p className="text-base text-center text-gray-500">
-                {description}
-              </p>
-            </div>
-          </Link>
+          <ListItem
+            key={_id}
+            _id={_id}
+            image={image}
+            name={name}
+            description={description}
+          />
         ))}
       </div>
     </div>

@@ -234,8 +234,8 @@ const Auth = ({
               </div>
             </Form>
           </Formik>
-          <div className="w-full justify-center items-center pt-8">
-            <p className="text-center"> Or Continue with</p>
+          <div className="w-full justify-center items-center py-8">
+            <p className="text-center">Or</p>
           </div>
           <ProvidersButtons providers={providers} />
         </div>

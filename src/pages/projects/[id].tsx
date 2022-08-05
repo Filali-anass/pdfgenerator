@@ -3,18 +3,12 @@ import React from "react";
 import { IProject } from "../../model/Project";
 
 export async function getServerSideProps(context: any) {
+  console.log(context.req.headers.host);
   const res = await fetch(
-    `https://pdfgenerator-opal.vercel.app/api/projects/${context.params.id}`,
+    `http://${context.req.headers.host}/api/projects/${context.params.id}`,
     {
       headers: {
-        Cookie: Object.entries(context.req.cookies).reduce((acc, e, index) => {
-          const [key, value] = e;
-          if (index == 0) {
-            return acc + key + "=" + value;
-          } else {
-            return acc + "; " + key + "=" + value;
-          }
-        }, ""),
+        Cookie: `next-auth.session-token=${context.req.cookies["next-auth.session-token"]}`,
       },
     }
   );
@@ -29,11 +23,16 @@ export default function Project({
   project: IProject;
 }) {
   return (
-    <div className="flex w-full justify-center items-center">
-      <div className="relative flex flex-col items-center justify-between col-span-4 px-8 py-12 space-y-4 overflow-hidden bg-gray-100 sm:rounded-xl cursor-pointer">
-        <Image src={image} alt="" width={50} height={50} />
-        <h4 className="text-xl font-medium text-gray-700">{name}</h4>
-        <p className="text-base text-center text-gray-500">{description}</p>
+    <div className="w-full justify-center items-center p-4">
+      <div className="flex bg-gray-100 p-4 rounded my-4">
+        <Image src={image} alt="" width={80} height={80} />
+        <div className="p-4">
+          <h2 className="">{name}</h2>
+          <p className="text-gray-500">{description}</p>
+        </div>
+      </div>
+      <div className="relative flex flex-col col-span-4 px-8 py-12 space-y-4 overflow-hidden bg-gray-100 sm:rounded-xl cursor-pointer">
+        Here we have the reports
       </div>
     </div>
   );

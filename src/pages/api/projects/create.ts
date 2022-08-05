@@ -23,7 +23,7 @@ export default async function handler(
 ) {
   if (req.method !== "POST") {
     return res
-      .status(200)
+      .status(404)
       .json({ error: "This API call only accepts POST methods" });
   }
 

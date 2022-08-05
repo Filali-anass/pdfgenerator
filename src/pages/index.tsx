@@ -1,22 +1,27 @@
-import type { NextPage } from "next";
-import { useSession, signIn, signOut } from "next-auth/react";
-import Projects from "../components/Projects";
-import { PROJECTS } from "../lib/data/PROJECTS";
+import React from "react";
+import { NextPageContext } from "next";
+import { getSession } from "next-auth/react";
 
-// export async function getStaticProps() {
-//   const projects = PROJECTS;
+export async function getServerSideProps(context: NextPageContext) {
+  const session = await getSession(context);
 
-//   return {
-//     props: {
-//       projects,
-//     },
-//   };
-// }
+  if (!session) {
+    return {
+      redirect: {
+        destination: "/auth",
+        permanent: false,
+      },
+    };
+  } else {
+    return {
+      redirect: {
+        destination: "/dashboard",
+        permanent: false,
+      },
+    };
+  }
+}
 
-const Home = ({ projects }: { projects: typeof PROJECTS }) => {
-  const { data: session } = useSession();
-
-  return <div className={"p-6"}>{/* <Projects projects={projects} /> */}</div>;
-};
+const Home = () => <></>;
 
 export default Home;

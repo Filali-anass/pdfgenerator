@@ -17,6 +17,10 @@ const ROUTES = [
     label: "Settings",
     path: "/settings",
   },
+  {
+    label: "Editor",
+    path: "/pdf",
+  },
 ];
 
 export default function SideBar() {
@@ -48,8 +52,8 @@ export default function SideBar() {
                     <span
                       className={
                         pathname.includes(path)
-                          ? "relative flex items-center space-x-4 bg-gradient-to-r from-sky-600 to-cyan-400 px-4 py-3 text-white"
-                          : "relative bg group flex items-center space-x-4 rounded-full px-4 py-3 text-gray-600 hover:text-sky-300"
+                          ? "relative flex items-center space-x-4 bg-indigo-600 focus:ring-2 focus:ring-indigo-600 px-4 py-3 text-white"
+                          : "relative bg group flex items-center space-x-4 rounded-full px-4 py-3 text-gray-600 hover:text-indigo-600 "
                       }
                     >
                       {label}
