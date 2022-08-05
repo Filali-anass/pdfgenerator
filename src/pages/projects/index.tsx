@@ -4,6 +4,7 @@ import Projects from "../../components/ProjectsList";
 import { IProject } from "../../model/Project";
 
 export async function getServerSideProps(context: any) {
+  console.log({ host: context.req.headers.host, cookies: context.req.cookies });
   const res = await fetch(`http://${context.req.headers.host}/api/projects`, {
     headers: {
       Cookie: `next-auth.session-token=${context.req.cookies["next-auth.session-token"]}`,
@@ -17,7 +18,7 @@ export async function getServerSideProps(context: any) {
 export default function ProjectsPage({ projects }: { projects: IProject[] }) {
   return (
     <div className={"flex w-full p-6"}>
-      <Projects projects={projects} />
+      <Projects projects={projects || []} />
     </div>
   );
 }
