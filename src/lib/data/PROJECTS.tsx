@@ -154,3 +154,18 @@ export const PROJECTS = [
       "https://ucarecdn.com/d889053a-33ee-41b7-aaa5-f9ec696999d4/Screenshot20220718at095253.png",
   },
 ];
+
+const report = {
+  projectId: "",
+  userId: "",
+  date: "",
+  city: "",
+  subject: "",
+  sections: [
+    {
+      title: "",
+      sentences: ["", ""],
+    },
+  ],
+  pictures: ["", ""],
+};

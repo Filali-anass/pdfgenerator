@@ -15,14 +15,8 @@ export default function Projects({ projects }: { projects: IProject[] }) {
         </Link>
       </div>
       <div className="grid grid-cols-4 gap-8  sm:grid-cols-8 lg:grid-cols-12 sm:px-8 xl:px-0 p-6">
-        {projects.map(({ _id, image, name, description }) => (
-          <ListItem
-            key={_id}
-            _id={_id}
-            image={image}
-            name={name}
-            description={description}
-          />
+        {projects.map((proj) => (
+          <ListItem key={proj._id} project={proj} />
         ))}
       </div>
     </div>
