@@ -13,13 +13,16 @@ import { useSession } from "next-auth/react";
 
 // Create styles
 const styles = StyleSheet.create({
-  page: {
-    padding: 20,
+  body: {
+    paddingTop: 20,
+    paddingBottom: 50,
+    paddingHorizontal: 20,
   },
   header: {
     flexDirection: "row",
     borderColor: "black",
     borderWidth: 1,
+    marginBottom: 10,
   },
   footer: {
     borderTopWidth: 1,
@@ -27,9 +30,7 @@ const styles = StyleSheet.create({
   },
 
   section: {
-    margin: 10,
-    // padding: 10,
-    // flexGrow: 1,
+    padding: 10,
   },
   pageNumber: {
     position: "absolute",
@@ -56,6 +57,7 @@ const Section = ({
       style={{
         flexDirection: "row",
         alignItems: "center",
+        paddingLeft: 10,
       }}
     >
       <View
@@ -64,10 +66,9 @@ const Section = ({
           height: 8,
           backgroundColor: "black",
           borderRadius: 50,
-          marginHorizontal: 10,
         }}
       />
-      <Text style={{}}>{title}</Text>
+      <Text style={{ paddingLeft: 10 }}>{title}</Text>
     </View>
     <View>
       {sentences.map((sentence) => (
@@ -76,6 +77,7 @@ const Section = ({
             style={{
               flexDirection: "row",
               paddingVertical: 5,
+              paddingLeft: 30,
             }}
           >
             <View
@@ -84,10 +86,9 @@ const Section = ({
                 height: 2,
                 backgroundColor: "black",
                 marginTop: 10,
-                marginHorizontal: 10,
               }}
             />
-            <Text>{sentence}</Text>
+            <Text style={{ paddingLeft: 10 }}>{sentence}</Text>
           </View>
         </View>
       ))}
@@ -96,6 +97,7 @@ const Section = ({
 );
 
 const Pager = () => (
+  // <View fixed>
   <Text
     style={styles.pageNumber}
     render={({ pageNumber, totalPages }) => `${pageNumber} / ${totalPages}`}
@@ -133,7 +135,7 @@ const Header = ({
           flex: 3,
           justifyContent: "center",
           alignItems: "center",
-          padding: 20,
+          padding: 10,
         }}
       >
         <Text style={{ textAlign: "center" }}>{projectName}</Text>
@@ -166,7 +168,15 @@ const ReportTitle = ({ title }: { title: string }) => {
   );
 };
 
-const DateAndLocation = ({}) => {
+const ReportSubject = ({ subject }: { subject: string }) => {
+  return (
+    <View style={{ padding: 20 }}>
+      <Text>Objet: {subject}</Text>
+    </View>
+  );
+};
+
+const DateAndLocation = ({ city, date }: { city: string; date: string }) => {
   return (
     <View
       style={{
@@ -175,42 +185,32 @@ const DateAndLocation = ({}) => {
         padding: 15,
       }}
     >
-      <Text>{"Casa le 09-09-2022"}</Text>
+      <Text>
+        {city}
+        {city !== "" ? "," : ""} {date !== "" ? "le" : ""} {date}
+      </Text>
     </View>
   );
 };
 
-export const MyDocument = ({ project, session }: any) => (
+export const MyDocument = ({
+  project,
+  session,
+  report,
+}: DataType & { session: any }) => (
   <PDFDocument>
-    <Page size="A4" style={styles.page}>
+    <Page size="A4" style={styles.body}>
       <Header
         projectName={project?.name ?? ""}
         projectImage={project?.image ?? ""}
         userImage={session?.user?.image ?? ""}
       />
-      <DateAndLocation />
+      <DateAndLocation city={report.city} date={report.date} />
       <ReportTitle title={"COMPTE RENDU"} />
-      <Section
-        section={{
-          title: "Pointage",
-          sentences: ["5 ouvriers : désherbage et nettoyage du chantier"],
-        }}
-      />
-      <Section
-        section={{
-          title: "Avancement travaux :",
-          sentences: [
-            "L’entreprise a procédé au désherbage et nettoyage du chantier pour reprise des travaux.",
-            "5 ouvriers : désherbage et nettoyage du chantier",
-          ],
-        }}
-      />
-      <Pager />
-    </Page>
-    <Page size="A4" style={styles.page}>
-      <View style={styles.section}>
-        <Text>Section #3</Text>
-      </View>
+      <ReportSubject subject={report.subject} />
+      {report.sections.map((section, index) => (
+        <Section key={section.title} section={section} />
+      ))}
       <Pager />
     </Page>
   </PDFDocument>
@@ -223,8 +223,12 @@ const PdfRenderComponent = ({}) => {
 
   return (
     <>
-      <PDFViewer style={{ flex: 1 }} showToolbar={false}>
-        <MyDocument project={project} session={session}></MyDocument>
+      <PDFViewer style={{ flex: 1 }} showToolbar>
+        <MyDocument
+          project={project}
+          session={session}
+          report={report}
+        ></MyDocument>
       </PDFViewer>
     </>
   );

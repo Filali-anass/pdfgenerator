@@ -28,7 +28,7 @@ export default function Pdf() {
 
   return (
     <div className="grid grid-cols-2 gap-3 h-screen w-full">
-      <div className="col-span-1 h-screen w-full">
+      <div className="col-span-1 h-screen w-full overflow-y-auto">
         <ContentFormComponent />
       </div>
       <div className="col-span-1 h-full w-full">
