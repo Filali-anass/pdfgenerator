@@ -1,17 +1,18 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Field, Form, Formik } from "formik";
 import axios from "axios";
 import Router from "next/router";
-import { Widget } from "@uploadcare/react-widget";
+import { useSession } from "next-auth/react";
+import Image from "next/image";
 
 export default function AddProject() {
   const [name, setName] = useState("");
   const [image, setImage] = useState("");
   const [description, setDescription] = useState("");
+  const { data: session } = useSession();
 
   const formSubmit = async (actions: any) => {
     actions.setSubmitting(false);
-
     const res = await axios
       .post(
         "/api/projects/create",
@@ -30,6 +31,30 @@ export default function AddProject() {
         console.log(error);
       });
   };
+
+  const openWidget = () => {
+    // create the widget
+    const widget = window?.cloudinary?.createUploadWidget(
+      {
+        cloudName: "dlmkxe4ts",
+        uploadPreset: "pdfgen",
+        folder: `pdfgen/${session?.user.name}`,
+        resourceType: "image",
+        multiple: false,
+      },
+      (error: any, result: any) => {
+        if (
+          result.event === "success" &&
+          result.info.resource_type === "image"
+        ) {
+          console.log(result.info);
+          setImage(result.info.secure_url);
+        }
+      }
+    );
+    widget.open(); // open up the widget after creation
+  };
+
   return (
     <div className="w-full p-4">
       <h2>Add Project</h2>
@@ -75,63 +100,33 @@ export default function AddProject() {
                   </div>
                 )}
               </Field>
-              <Widget
-                publicKey="54fac5e9d2af1574492d"
-                systemDialog
-                imagesOnly
-                clearable
-                onChange={(fileInfo) => {
-                  console.log("onChange", fileInfo.cdnUrl);
-                  if (fileInfo.cdnUrl) setImage(fileInfo.cdnUrl);
-                }}
-                onFileSelect={(fileInfo) => {
-                  console.log("onFileSelect", fileInfo);
-                }}
-                onDialogOpen={(dialog) => {
-                  console.log("onDialogOpen", dialog);
-                }}
-                onDialogClose={(info) => {
-                  console.log("onDialogClose", info);
-                }}
-                onTabChange={(tabName) => {
-                  console.log("onTabChange", tabName);
-                }}
-              />
-              {/* <Field name="email">
+              <Field name="name">
                 {() => (
                   <div className="my-4">
-                    <label htmlFor="email-address" className="text-sm px-2">
-                      Email address
+                    <label htmlFor="files" className="text-sm px-2">
+                      Project Image
                     </label>
                     <input
-                      value={email}
-                      onChange={(e) => setEmail(e.target.value)}
-                      placeholder="Email Address"
+                      value={image}
+                      id="files"
+                      name="files"
                       required
-                      autoComplete="email"
-                      className="appearance-none rounded relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900  focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                      className="h-[0.5px] p-[0px] appearance-none rounded relative block w-full focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                     ></input>
+                    <button
+                      type="button"
+                      id="files"
+                      className="appearance-none rounded relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900  focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+                      onClick={openWidget}
+                    >
+                      Upload Image
+                    </button>
                   </div>
                 )}
               </Field>
-              <Field name="password">
-                {() => (
-                  <div className="my-4">
-                    <label htmlFor="password" className="text-sm px-2">
-                      Password
-                    </label>
-                    <input
-                      value={password}
-                      onChange={(e) => setPassword(e.target.value)}
-                      type="password"
-                      placeholder="Password"
-                      required
-                      autoComplete="current-password"
-                      className="appearance-none rounded relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900  focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
-                    ></input>
-                  </div>
-                )}
-              </Field> */}
+              {image !== "" && (
+                <Image src={image} width={80} height={80} alt="" />
+              )}
             </div>
 
             <div>

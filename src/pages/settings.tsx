@@ -1,5 +1,7 @@
 import React from "react";
-import { useSession, signIn, getProviders } from "next-auth/react";
+import { useSession } from "next-auth/react";
+import { signOut } from "next-auth/react";
+import Router from "next/router";
 
 export default function Setting() {
   const { data: session, status } = useSession();
@@ -16,6 +18,14 @@ export default function Setting() {
     <>
       <h1>Protected Page</h1>
       <p>You can view this page because you are signed in.</p>
+      <button
+        onClick={() => {
+          signOut();
+          Router.push("/");
+        }}
+      >
+        Sign out
+      </button>
     </>
   );
 }

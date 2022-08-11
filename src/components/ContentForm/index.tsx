@@ -1,12 +1,12 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 
-import { Widget } from "@uploadcare/react-widget";
 import useEditorSlice, { DataType } from "../../store/useEditorSlice";
 import { MyDocument } from "../PdfRenderComponent";
 import { usePDF } from "@react-pdf/renderer";
 import { useSession } from "next-auth/react";
 import SectionInputs from "./SectionInputs";
 
+// import { CloudinaryContext, Image as CloudinaryImage } from "cloudinary-react";
 export default function ContentFormComponent() {
   const {
     project,
@@ -18,7 +18,6 @@ export default function ContentFormComponent() {
     editSection,
   } = useEditorSlice();
   const { data: session } = useSession();
-
   const [instance, updatePdf] = usePDF({
     document: (
       <MyDocument
@@ -28,12 +27,9 @@ export default function ContentFormComponent() {
       ></MyDocument>
     ),
   });
-
-  // useEffect(() => updatePdf(), [instance]);
-
   return (
     <div className="w-full h-screen justify-center p-4">
-      {/* <div className="flex w-full justify-end">
+      <div className="flex w-full justify-end">
         <button className="px-4 py-2 bg-indigo-500 outline-none rounded text-white shadow-indigo-200 shadow-lg font-medium active:shadow-none active:scale-95 hover:bg-indigo-600 focus:bg-indigo-600 focus:ring-2 focus:ring-indigo-600 focus:ring-offset-2 disabled:bg-gray-400/80 disabled:shadow-none disabled:cursor-not-allowed transition-colors duration-200">
           <a
             href={instance.url ?? ""}
@@ -42,7 +38,7 @@ export default function ContentFormComponent() {
             <p className="cursor-pointer">Download</p>
           </a>
         </button>
-      </div> */}
+      </div>
       <div className="w-full gap-4">
         <h5 className="my-2">City & Date:</h5>
         <div className="flex w-full gap-4">
@@ -59,7 +55,7 @@ export default function ContentFormComponent() {
               id="city"
               defaultValue={report.city}
               className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-              onBlur={(e) => setCity(e.target.value)}
+              onChange={(e) => setCity(e.target.value)}
             />
           </div>
           <div className="w-full">
@@ -75,7 +71,7 @@ export default function ContentFormComponent() {
               id="date"
               defaultValue={report.date}
               className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-              onBlur={(e) => setDate(e.target.value)}
+              onChange={(e) => setDate(e.target.value)}
             />
           </div>
         </div>
@@ -96,7 +92,7 @@ export default function ContentFormComponent() {
             id="subject"
             defaultValue={report.subject}
             className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
-            onBlur={(e) => setSubject(e.target.value)}
+            onChange={(e) => setSubject(e.target.value)}
           />
         </div>
       </div>
@@ -118,7 +114,6 @@ export default function ContentFormComponent() {
           </div>
         ))}
       </div>
-
       {/*  <a onClick={() => console.log(instance)}>LOG</a> */}
     </div>
   );
