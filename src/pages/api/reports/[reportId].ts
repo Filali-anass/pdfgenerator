@@ -1,18 +1,18 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next";
 import dbConnect from "../../../lib/dbConnect";
-import Project, { IProject } from "../../../model/Project";
+import Report, { IReport } from "../../../model/Report";
 import { getSession } from "next-auth/react";
 import { z } from "zod";
 
 const schema = z.object({
-  projectId: z.string().length(24),
+  report: z.string().length(24),
 });
 
 interface ResponseData {
   error?: string | object;
   message?: string;
-  project?: IProject;
+  report?: IReport;
 }
 
 export default async function handler(
@@ -39,14 +39,14 @@ export default async function handler(
   if (session) {
     await dbConnect();
 
-    const { projectId } = req.query;
-    const project = await Project.findById(projectId);
+    const { reportId } = req.query;
+    const report = await Report.findById(reportId);
 
-    if (!project) {
-      return res.status(404).json({ error: "Project Not Found" });
+    if (!report) {
+      return res.status(404).json({ error: "Report Not Found" });
     }
 
-    res.status(200).json({ message: "Projects Fetch Successfuly", project });
+    res.status(200).json({ message: "Report Fetch Successfuly", report });
   } else {
     res.status(401).json({ message: "NOT Authorized" });
   }

@@ -57,7 +57,7 @@ export default function AddProject() {
 
   return (
     <div className="w-full p-4">
-      <h2>Add Project</h2>
+      <h2>Ajouter un Projet</h2>
       <div className="md:m-20">
         <Formik
           initialValues={{}} // { email: "", password: "" }

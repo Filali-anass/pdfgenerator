@@ -14,7 +14,7 @@ const projectSchema = new Schema<IProject>(
     userId: { type: mongoose.Schema.Types.ObjectId, required: true },
     name: {
       type: String,
-      requeired: true,
+      required: true,
     },
     description: {
       type: String,

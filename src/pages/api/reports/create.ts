@@ -1,20 +1,33 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next";
 import dbConnect from "../../../lib/dbConnect";
-import Project, { IProject } from "../../../model/Project";
+import Report, { IReport } from "../../../model/Report";
 import { getSession } from "next-auth/react";
 
 interface ResponseData {
   error?: string | object;
   message?: string;
-  project?: IProject;
+  report?: IReport;
 }
 
 import { z } from "zod";
 
 const schema = z.object({
-  name: z.string(),
-  image: z.string().optional(),
+  report: z.object({
+    projectId: z.string().length(24),
+    // userId: "",
+    date: z.string(),
+    city: z.string(),
+    subject: z.string(),
+    sections: z.array(
+      z.object({
+        title: z.string(),
+        sentences: z.array(z.string()),
+      })
+    ),
+    pictures: z.array(z.string()),
+  }),
+  url: z.string().optional(),
 });
 
 export default async function handler(
@@ -39,19 +52,19 @@ export default async function handler(
   const session = await getSession({ req });
   if (session) {
     await dbConnect();
-    console.log(session);
-    const project = await Project.create(
-      new Project({
-        ...req.body,
+    console.log(session, req.body);
+    const report = await Report.create(
+      new Report({
+        ...req.body.report,
         userId: session.user._id || session?.token?.sub,
       })
     );
 
-    if (!project) {
-      return res.status(400).json({ error: "Error Creating Project" });
+    if (!report) {
+      return res.status(400).json({ error: "Error Creating Report" });
     }
 
-    res.status(200).json({ message: "Project Created Successfuly", project });
+    res.status(200).json({ message: "Report Created Successfuly", report });
   } else {
     res.status(401).json({ message: "NOT Authorized" });
   }

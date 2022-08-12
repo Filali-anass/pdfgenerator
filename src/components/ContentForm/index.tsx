@@ -5,9 +5,15 @@ import { MyDocument } from "../PdfRenderComponent";
 import { usePDF } from "@react-pdf/renderer";
 import { useSession } from "next-auth/react";
 import SectionInputs from "./SectionInputs";
+import { CITIES } from "../../lib/data/cities";
+import Image from "next/image";
 
 // import { CloudinaryContext, Image as CloudinaryImage } from "cloudinary-react";
-export default function ContentFormComponent() {
+export default function ContentFormComponent({
+  cities,
+}: {
+  cities: typeof CITIES;
+}) {
   const {
     project,
     report,
@@ -15,7 +21,7 @@ export default function ContentFormComponent() {
     setDate,
     setSubject,
     addSection,
-    editSection,
+    addPictures,
   } = useEditorSlice();
   const { data: session } = useSession();
   const [instance, updatePdf] = usePDF({
@@ -27,9 +33,32 @@ export default function ContentFormComponent() {
       ></MyDocument>
     ),
   });
+
+  const openWidget = () => {
+    // create the widget
+    const widget = window?.cloudinary?.createUploadWidget(
+      {
+        cloudName: "dlmkxe4ts",
+        uploadPreset: "pdfgen",
+        folder: `pdfgen/${session?.user.name}`,
+        resourceType: "image",
+        multiple: true,
+      },
+      (error: any, result: any) => {
+        if (
+          result.event === "success" &&
+          result.info.resource_type === "image"
+        ) {
+          console.log(result.info);
+          addPictures([result.info.secure_url]);
+        }
+      }
+    );
+    widget.open(); // open up the widget after creation
+  };
   return (
     <div className="w-full h-screen justify-center p-4">
-      <div className="flex w-full justify-end">
+      {/* <div className="flex w-full justify-end">
         <button className="px-4 py-2 bg-indigo-500 outline-none rounded text-white shadow-indigo-200 shadow-lg font-medium active:shadow-none active:scale-95 hover:bg-indigo-600 focus:bg-indigo-600 focus:ring-2 focus:ring-indigo-600 focus:ring-offset-2 disabled:bg-gray-400/80 disabled:shadow-none disabled:cursor-not-allowed transition-colors duration-200">
           <a
             href={instance.url ?? ""}
@@ -38,25 +67,31 @@ export default function ContentFormComponent() {
             <p className="cursor-pointer">Download</p>
           </a>
         </button>
-      </div>
+      </div> */}
       <div className="w-full gap-4">
         <h5 className="my-2">City & Date:</h5>
         <div className="flex w-full gap-4">
-          <div className=" w-full">
+          <div className="w-full">
             <label
               htmlFor="city"
               className="block text-sm font-medium text-gray-700"
             >
               City
             </label>
-            <input
-              type="text"
-              name="city"
+            <select
               id="city"
-              defaultValue={report.city}
-              className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
+              className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md p-[10px]"
               onChange={(e) => setCity(e.target.value)}
-            />
+            >
+              <option defaultValue={report.city}>Choose a city</option>
+              {(cities || []).map((city) => {
+                return (
+                  <option key={city.id} value={city.name}>
+                    {city.name}
+                  </option>
+                );
+              })}
+            </select>
           </div>
           <div className="w-full">
             <label
@@ -66,9 +101,9 @@ export default function ContentFormComponent() {
               Date
             </label>
             <input
-              type="text"
               name="date"
               id="date"
+              type="date"
               defaultValue={report.date}
               className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
               onChange={(e) => setDate(e.target.value)}
@@ -99,20 +134,42 @@ export default function ContentFormComponent() {
       <div className=" w-full gap-4">
         <div className="flex">
           <h5 className="my-2">Sections:</h5>
+        </div>
+        {report.sections.map((section, index) => (
+          <div key={section.uid || section._id} className="py-2">
+            <SectionInputs index={index} section={section} />
+          </div>
+        ))}
+        <div>
           <button
-            className=""
+            className="appearance-none rounded relative block w-full px-3 py-2 my-2 border border-gray-300 placeholder-gray-500 text-gray-900  focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
             onClick={() => {
               addSection({ title: "", sentences: [""] });
             }}
           >
-            Add
+            Add Section
           </button>
         </div>
-        {report.sections.map((section, index) => (
-          <div key={section.uid} className="py-2">
-            <SectionInputs index={index} section={section} />
-          </div>
-        ))}
+      </div>
+      <div className=" w-full gap-4">
+        <div className="flex">
+          <h5 className="my-2">Pictures:</h5>
+        </div>
+        <button
+          type="button"
+          id="files"
+          className="appearance-none rounded relative block w-full px-3 py-2 my-2 border border-gray-300 placeholder-gray-500 text-gray-900  focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+          onClick={openWidget}
+        >
+          Add Images
+        </button>
+        <div className="flex p-4">
+          {report.pictures.map((p) => (
+            <div key={p} className="mx-3">
+              <Image src={p} alt="" width={70} height={70} />
+            </div>
+          ))}
+        </div>
       </div>
       {/*  <a onClick={() => console.log(instance)}>LOG</a> */}
     </div>

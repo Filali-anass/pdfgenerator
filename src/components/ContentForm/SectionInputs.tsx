@@ -47,17 +47,6 @@ export default function SectionInputs({
             >
               Remarques
             </label>
-            <button
-              className=""
-              onClick={() => {
-                editSection(
-                  { ...section, sentences: [...section.sentences, ""] },
-                  section.uid
-                );
-              }}
-            >
-              Add
-            </button>
           </div>
           {section.sentences.map((sentence, indx) => (
             <div key={`${section.uid}-${indx}`}>
@@ -69,6 +58,19 @@ export default function SectionInputs({
               />
             </div>
           ))}
+          <div>
+            <button
+              className="appearance-none rounded relative block w-full px-3 py-2 my-2 border border-gray-300 placeholder-gray-500 text-gray-900  focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
+              onClick={() => {
+                editSection(
+                  { ...section, sentences: [...section.sentences, ""] },
+                  section.uid
+                );
+              }}
+            >
+              Ajouter une Remarque
+            </button>
+          </div>
         </div>
       </div>
     </div>

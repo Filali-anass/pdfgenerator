@@ -24,22 +24,27 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     marginBottom: 10,
   },
-  footer: {
-    borderTopWidth: 1,
-    borderColor: "black",
-  },
 
   section: {
     padding: 10,
   },
   pageNumber: {
-    position: "absolute",
     fontSize: 12,
-    bottom: 30,
-    left: 0,
-    right: 0,
     textAlign: "center",
     color: "grey",
+  },
+  footer: {
+    borderTopWidth: 1,
+    borderColor: "black",
+    position: "absolute",
+    bottom: 0,
+    left: 0,
+    right: 0,
+    padding: 20,
+    paddingHorizontal: 40,
+    marginHorizontal: 20,
+    flexDirection: "row",
+    justifyContent: "space-between",
   },
   image: {
     width: 50,
@@ -96,13 +101,16 @@ const Section = ({
   </View>
 );
 
-const Pager = () => (
-  // <View fixed>
-  <Text
-    style={styles.pageNumber}
-    render={({ pageNumber, totalPages }) => `${pageNumber} / ${totalPages}`}
-    fixed
-  />
+const Pager = ({ userName }: { userName: string }) => (
+  <View fixed style={styles.footer}>
+    <Text style={styles.pageNumber}>
+      Service Suivi {"«"} {userName} {"»"}
+    </Text>
+    <Text
+      style={styles.pageNumber}
+      render={({ pageNumber, totalPages }) => `${pageNumber} / ${totalPages}`}
+    />
+  </View>
 );
 
 const Header = ({
@@ -123,9 +131,10 @@ const Header = ({
           borderRightWidth: 1,
           justifyContent: "center",
           alignItems: "center",
+          padding: 5,
         }}
       >
-        {userImage != "" && (
+        {userImage !== "" && (
           // eslint-disable-next-line jsx-a11y/alt-text
           <Image style={styles.image} src={userImage} />
         )}
@@ -147,6 +156,7 @@ const Header = ({
           borderLeftWidth: 1,
           justifyContent: "center",
           alignItems: "center",
+          padding: 5,
         }}
       >
         {projectImage != "" && (
@@ -193,6 +203,11 @@ const DateAndLocation = ({ city, date }: { city: string; date: string }) => {
   );
 };
 
+const chunkArray: <T>(arr: T[], size: number) => T[][] = (arr, size) =>
+  arr.length > size
+    ? [arr.slice(0, size), ...chunkArray(arr.slice(size), size)]
+    : [arr];
+
 export const MyDocument = ({
   project,
   session,
@@ -211,8 +226,45 @@ export const MyDocument = ({
       {report.sections.map((section, index) => (
         <Section key={section.title} section={section} />
       ))}
-      <Pager />
+      <Pager userName={session?.user?.name ?? ""} />
     </Page>
+    {report.pictures.length !== 0 &&
+      chunkArray(report.pictures, 2).map((arr, index) => (
+        <Page key={index} size="A4" style={styles.body}>
+          <Header
+            projectName={project?.name ?? ""}
+            projectImage={project?.image ?? ""}
+            userImage={session?.user?.image ?? ""}
+          />
+          <View>
+            <ReportTitle title={"REPORTAGE PHOTOGRAPHIQUE"} />
+            {arr.map((p) => (
+              <View
+                key={p}
+                style={{
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                <View style={{ borderWidth: 1, margin: -0.5 }}>
+                  {
+                    // eslint-disable-next-line jsx-a11y/alt-text
+                    <Image
+                      style={{
+                        width: 400,
+                        height: 300,
+                        padding: 20,
+                      }}
+                      src={p}
+                    />
+                  }
+                </View>
+              </View>
+            ))}
+          </View>
+          <Pager userName={session?.user?.name ?? ""} />
+        </Page>
+      ))}
   </PDFDocument>
 );
 

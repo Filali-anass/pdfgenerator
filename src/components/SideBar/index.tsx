@@ -5,10 +5,10 @@ import { useRouter } from "next/router";
 import React from "react";
 
 const ROUTES = [
-  {
-    label: "Dashboard",
-    path: "/dashboard",
-  },
+  // {
+  //   label: "Dashboard",
+  //   path: "/dashboard",
+  // },
   {
     label: "Projects",
     path: "/projects",
@@ -17,10 +17,10 @@ const ROUTES = [
     label: "Settings",
     path: "/settings",
   },
-  {
-    label: "Editor",
-    path: "/pdf",
-  },
+  // {
+  //   label: "Editor",
+  //   path: "/pdf",
+  // },
 ];
 
 export default function SideBar() {

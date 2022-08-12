@@ -1,8 +1,13 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next";
-import dbConnect from "../../../lib/dbConnect";
-import Project, { IProject } from "../../../model/Project";
+import dbConnect from "../../../../lib/dbConnect";
+import Project, { IProject } from "../../../../model/Project";
 import { getSession } from "next-auth/react";
+import { z } from "zod";
+
+const schema = z.object({
+  projectId: z.string().length(24),
+});
 
 interface ResponseData {
   error?: string | object;
@@ -10,24 +15,18 @@ interface ResponseData {
   project?: IProject;
 }
 
-import { z } from "zod";
-
-const schema = z.object({
-  name: z.string(),
-  image: z.string().optional(),
-});
-
 export default async function handler(
   req: NextApiRequest,
   res: NextApiResponse<ResponseData>
 ) {
-  if (req.method !== "POST") {
+  // validate if it is a GET
+  if (req.method !== "GET") {
     return res
       .status(404)
-      .json({ error: "This API call only accepts POST methods" });
+      .json({ error: "This API call only accepts GET methods" });
   }
 
-  const validation = schema.safeParse(req.body);
+  const validation = schema.safeParse(req.query);
 
   if (!validation.success) {
     return res.status(400).send({
@@ -39,19 +38,15 @@ export default async function handler(
   const session = await getSession({ req });
   if (session) {
     await dbConnect();
-    console.log(session);
-    const project = await Project.create(
-      new Project({
-        ...req.body,
-        userId: session.user._id || session?.token?.sub,
-      })
-    );
+
+    const { projectId } = req.query;
+    const project = await Project.findById(projectId);
 
     if (!project) {
-      return res.status(400).json({ error: "Error Creating Project" });
+      return res.status(404).json({ error: "Project Not Found" });
     }
 
-    res.status(200).json({ message: "Project Created Successfuly", project });
+    res.status(200).json({ message: "Projects Fetch Successfuly", project });
   } else {
     res.status(401).json({ message: "NOT Authorized" });
   }
