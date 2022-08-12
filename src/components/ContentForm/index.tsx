@@ -9,6 +9,7 @@ import { CITIES } from "../../lib/data/cities";
 import Image from "next/image";
 import Router, { useRouter } from "next/router";
 import axios from "axios";
+import { AiFillDelete } from "react-icons/ai";
 
 // import { CloudinaryContext, Image as CloudinaryImage } from "cloudinary-react";
 export default function ContentFormComponent({
@@ -30,6 +31,7 @@ export default function ContentFormComponent({
     setSubject,
     addSection,
     addPictures,
+    deletePicture,
   } = useEditorSlice();
   const { data: session } = useSession();
   const [instance, updatePdf] = usePDF({
@@ -264,6 +266,13 @@ export default function ContentFormComponent({
           {report.pictures.map((p) => (
             <div key={p} className="mx-3">
               <Image src={p} alt="" width={70} height={70} />
+              <button
+                onClick={() => {
+                  deletePicture(p);
+                }}
+              >
+                <AiFillDelete size={20} color={"#eb2c2c"} />
+              </button>
             </div>
           ))}
         </div>

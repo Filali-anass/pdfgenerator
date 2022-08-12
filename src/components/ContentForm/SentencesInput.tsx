@@ -1,5 +1,7 @@
 import React from "react";
 import useEditorSlice, { DataType } from "../../store/useEditorSlice";
+import { AiFillDelete } from "react-icons/ai";
+
 export function SentencesInput({
   index,
   indx,
@@ -46,8 +48,9 @@ export function SentencesInput({
             section.uid
           );
         }}
+        className="px-4"
       >
-        delete
+        <AiFillDelete size={20} color={"#eb2c2c"} />
       </button>
     </div>
   );

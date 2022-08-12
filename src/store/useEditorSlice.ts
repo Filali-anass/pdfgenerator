@@ -34,10 +34,12 @@ type DataMutators = {
     section: DataType["report"]["sections"][number],
     uid?: string
   ) => void;
+  deleteSection: (uid?: string) => void;
   setDate: (date: string) => void;
   setCity: (city: string) => void;
   setSubject: (subject: string) => void;
   addPictures: (pictures: string[]) => void;
+  deletePicture: (picture: string) => void;
 };
 
 const initialState: DataType = {
@@ -104,6 +106,15 @@ const editorStore: (set: any) => DataType & DataMutators = (set) => ({
       })
     );
   },
+  deleteSection: (uid) => {
+    set(
+      produce((draft: DataType) => {
+        draft.report.sections = draft.report.sections.filter(
+          (s) => s.uid !== uid
+        );
+      })
+    );
+  },
 
   setDate: (date) => {
     set(
@@ -131,6 +142,15 @@ const editorStore: (set: any) => DataType & DataMutators = (set) => ({
     set(
       produce((draft: DataType) => {
         draft.report.pictures = [...draft.report.pictures, ...pictures];
+      })
+    );
+  },
+  deletePicture: (picture) => {
+    set(
+      produce((draft: DataType) => {
+        draft.report.pictures = draft.report.pictures.filter(
+          (p) => p !== picture
+        );
       })
     );
   },

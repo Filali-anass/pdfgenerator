@@ -1,4 +1,7 @@
+import { useSession } from "next-auth/react";
+import Link from "next/link";
 import React from "react";
+import AccessDenied from "../../components/AccessDenied";
 
 import Projects from "../../components/ProjectsList";
 import { IProject } from "../../model/Project";
@@ -20,10 +23,20 @@ export async function getServerSideProps(context: any) {
   });
   const data = await res.json();
 
-  return { props: { projects: data.projects } };
+  return { props: { projects: data?.projects ?? [] } };
 }
 
 export default function ProjectsPage({ projects }: { projects: IProject[] }) {
+  const { data: session, status } = useSession();
+
+  if (status === "loading") {
+    return <p>Loading...</p>;
+  }
+
+  if (status === "unauthenticated") {
+    return <AccessDenied />;
+  }
+
   return (
     <div className={"flex w-full p-6"}>
       <Projects projects={projects || []} />

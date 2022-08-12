@@ -2,6 +2,7 @@ import React from "react";
 import { useSession } from "next-auth/react";
 import { signOut } from "next-auth/react";
 import Router from "next/router";
+import AccessDenied from "../components/AccessDenied";
 
 export default function Setting() {
   const { data: session, status } = useSession();
@@ -11,7 +12,7 @@ export default function Setting() {
   }
 
   if (status === "unauthenticated") {
-    return <p>Access Denied</p>;
+    return <AccessDenied />;
   }
 
   return (

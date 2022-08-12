@@ -10,11 +10,11 @@ const ROUTES = [
   //   path: "/dashboard",
   // },
   {
-    label: "Projects",
+    label: "Projets",
     path: "/projects",
   },
   {
-    label: "Settings",
+    label: "Parametres",
     path: "/settings",
   },
   // {

@@ -1,6 +1,7 @@
 import { SentencesInput } from "./SentencesInput";
 import React from "react";
 import useEditorSlice, { DataType } from "../../store/useEditorSlice";
+import { AiFillDelete } from "react-icons/ai";
 
 export default function SectionInputs({
   index,
@@ -9,13 +10,22 @@ export default function SectionInputs({
   index: number;
   section: DataType["report"]["sections"][number];
 }) {
-  const { editSection } = useEditorSlice();
+  const { editSection, deleteSection } = useEditorSlice();
 
   return (
     <div className="flex w-full">
-      <label className="block text-sm font-medium text-gray-700 w-10">
-        #{index + 1}
-      </label>
+      <div className="">
+        <label className="block text-sm font-medium text-gray-700 w-10">
+          #{index + 1}
+        </label>
+        <button
+          onClick={() => {
+            deleteSection(section.uid);
+          }}
+        >
+          <AiFillDelete size={20} color={"#eb2c2c"} />
+        </button>
+      </div>
       <div className="w-full">
         <div className="w-full">
           <label
