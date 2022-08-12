@@ -58,43 +58,48 @@ const Section = ({
   section: DataType["report"]["sections"][number];
 }) => (
   <View style={styles.section}>
-    <View
-      style={{
-        flexDirection: "row",
-        alignItems: "center",
-        paddingLeft: 10,
-      }}
-    >
+    {title !== "" && (
       <View
         style={{
-          width: 8,
-          height: 8,
-          backgroundColor: "black",
-          borderRadius: 50,
+          flexDirection: "row",
+          alignItems: "center",
+          paddingLeft: 10,
         }}
-      />
-      <Text style={{ paddingLeft: 10 }}>{title}</Text>
-    </View>
+      >
+        <View
+          style={{
+            width: 8,
+            height: 8,
+            marginTop: 2,
+            backgroundColor: "#1f497e",
+            borderRadius: 50,
+          }}
+        />
+        <Text style={{ paddingLeft: 10, color: "#1f497e" }}>{title}</Text>
+      </View>
+    )}
     <View>
       {sentences.map((sentence) => (
         <View key={sentence}>
-          <View
-            style={{
-              flexDirection: "row",
-              paddingVertical: 5,
-              paddingLeft: 30,
-            }}
-          >
+          {sentence !== "" && (
             <View
               style={{
-                width: 8,
-                height: 2,
-                backgroundColor: "black",
-                marginTop: 10,
+                flexDirection: "row",
+                paddingVertical: 5,
+                paddingLeft: 30,
               }}
-            />
-            <Text style={{ paddingLeft: 10 }}>{sentence}</Text>
-          </View>
+            >
+              <View
+                style={{
+                  width: 8,
+                  height: 2,
+                  backgroundColor: "black",
+                  marginTop: 10,
+                }}
+              />
+              <Text style={{ paddingLeft: 10 }}>{sentence}</Text>
+            </View>
+          )}
         </View>
       ))}
     </View>
@@ -173,15 +178,35 @@ const ReportTitle = ({ title }: { title: string }) => {
     <View
       style={{ justifyContent: "center", alignItems: "center", padding: 20 }}
     >
-      <Text>{title}</Text>
+      <Text style={{ borderBottomWidth: 2 }}>{title}</Text>
     </View>
   );
 };
 
 const ReportSubject = ({ subject }: { subject: string }) => {
   return (
-    <View style={{ padding: 20 }}>
-      <Text>Objet: {subject}</Text>
+    <View style={styles.section}>
+      <View
+        style={{
+          flexDirection: "row",
+          alignItems: "center",
+          paddingLeft: 10,
+        }}
+      >
+        <View
+          style={{
+            width: 8,
+            height: 8,
+            marginTop: 2,
+            backgroundColor: "#1f497e",
+            borderRadius: 50,
+          }}
+        />
+        <View style={{ flexDirection: "row" }}>
+          <Text style={{ paddingLeft: 10, color: "#1f497e" }}>Objet: </Text>
+          <Text style={{ paddingLeft: 5 }}>{subject}</Text>
+        </View>
+      </View>
     </View>
   );
 };
@@ -195,9 +220,11 @@ const DateAndLocation = ({ city, date }: { city: string; date: string }) => {
         padding: 15,
       }}
     >
-      <Text>
+      <Text style={{ borderBottomWidth: 1 }}>
         {city}
-        {city !== "" ? "," : ""} {date !== "" ? "le" : ""} {date}
+        {city !== "" ? ", " : ""}
+        {date !== "" ? "le " : ""}
+        {date}
       </Text>
     </View>
   );

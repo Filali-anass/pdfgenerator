@@ -15,7 +15,7 @@ export async function getServerSideProps(context: NextPageContext) {
   } else {
     return {
       redirect: {
-        destination: "/dashboard",
+        destination: "/projects",
         permanent: false,
       },
     };

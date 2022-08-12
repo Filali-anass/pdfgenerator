@@ -10,6 +10,7 @@ export default function SectionInputs({
   section: DataType["report"]["sections"][number];
 }) {
   const { editSection } = useEditorSlice();
+
   return (
     <div className="flex w-full">
       <label className="block text-sm font-medium text-gray-700 w-10">
@@ -44,7 +45,7 @@ export default function SectionInputs({
             </label>
           </div>
           {section.sentences.map((sentence, indx) => (
-            <div key={`${section.uid}-${indx}`}>
+            <div key={`${section.uid}-${Math.random()}`}>
               <SentencesInput
                 index={index}
                 indx={indx}

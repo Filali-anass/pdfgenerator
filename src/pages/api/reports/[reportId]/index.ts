@@ -1,7 +1,7 @@
 // Next.js API route support: https://nextjs.org/docs/api-routes/introduction
 import type { NextApiRequest, NextApiResponse } from "next";
-import dbConnect from "../../../lib/dbConnect";
-import Report, { IReport } from "../../../model/Report";
+import dbConnect from "../../../../lib/dbConnect";
+import Report, { IReport } from "../../../../model/Report";
 import { getSession } from "next-auth/react";
 import { z } from "zod";
 

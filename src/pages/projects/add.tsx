@@ -73,12 +73,12 @@ export default function AddProject() {
                 {() => (
                   <div className="my-4">
                     <label htmlFor="name" className="text-sm px-2">
-                      Project Name
+                      Nom Projet
                     </label>
                     <input
                       value={name}
                       onChange={(e) => setName(e.target.value)}
-                      placeholder="Project Name"
+                      placeholder="Nom"
                       required
                       className="appearance-none rounded relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900  focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                     ></input>
@@ -89,12 +89,12 @@ export default function AddProject() {
                 {() => (
                   <div className="my-4">
                     <label htmlFor="name" className="text-sm px-2">
-                      Project Description
+                      Description du Projet
                     </label>
                     <input
                       value={description}
                       onChange={(e) => setDescription(e.target.value)}
-                      placeholder="Project Description"
+                      placeholder="Description"
                       className="appearance-none rounded relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900  focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                     ></input>
                   </div>
@@ -104,7 +104,7 @@ export default function AddProject() {
                 {() => (
                   <div className="my-4">
                     <label htmlFor="files" className="text-sm px-2">
-                      Project Image
+                      Logo du Projet
                     </label>
                     <input
                       value={image}
@@ -119,7 +119,7 @@ export default function AddProject() {
                       className="appearance-none rounded relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900  focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                       onClick={openWidget}
                     >
-                      Upload Image
+                      Ajouter Photo
                     </button>
                   </div>
                 )}
@@ -149,7 +149,7 @@ export default function AddProject() {
                     />
                   </svg>
                 </span>
-                Create
+                Enregistre le Projet
               </button>
             </div>
           </Form>

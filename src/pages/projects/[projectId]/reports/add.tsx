@@ -40,6 +40,7 @@ export default function Pdf({ cities }: { cities: typeof CITIES }) {
       preview={preview}
       togglePreview={togglePreview}
       cities={cities}
+      action="ADD"
     />
   );
 }

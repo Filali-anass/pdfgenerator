@@ -45,6 +45,7 @@ export default function ReportEdit({ cities }: { cities: typeof CITIES }) {
       preview={preview}
       togglePreview={togglePreview}
       cities={cities}
+      action="EDIT"
     />
   );
 }

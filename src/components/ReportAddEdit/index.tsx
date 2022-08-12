@@ -16,10 +16,12 @@ export function ReportAddEdit({
   preview,
   togglePreview,
   cities,
+  action,
 }: {
   preview: boolean;
   togglePreview: (action: string) => void;
   cities: typeof CITIES;
+  action: "ADD" | "EDIT";
 }) {
   return (
     <div className="grid grid-cols-2 gap-3 h-screen w-full">
@@ -45,7 +47,11 @@ export function ReportAddEdit({
             </label>
           </div>
         </div>
-        <ContentFormComponent cities={cities} />
+        <ContentFormComponent
+          cities={cities}
+          action={action}
+          preview={preview}
+        />
       </div>
 
       <div className="col-span-1 h-full w-full">

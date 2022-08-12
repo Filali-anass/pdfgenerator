@@ -47,14 +47,7 @@ const initialState: DataType = {
     date: "",
     city: "",
     subject: "",
-    sections: [
-      {
-        uid: uuid(),
-        _id: uuid(),
-        title: "",
-        sentences: [""],
-      },
-    ],
+    sections: [],
     pictures: [],
   },
   project: undefined,
@@ -68,7 +61,9 @@ const editorStore: (set: any) => DataType & DataMutators = (set) => ({
       produce((draft: DataType) => {
         draft.report = initialState.report;
         draft.project = project;
-        draft.report.projectId = project._id;
+        try {
+          draft.report.projectId = project._id;
+        } catch (e) {}
       })
     );
   },
