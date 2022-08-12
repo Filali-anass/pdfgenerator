@@ -263,7 +263,7 @@ const WeatherComponent = ({
             {
               // eslint-disable-next-line jsx-a11y/alt-text
               <Image
-                src={`http://openweathermap.org/img/wn/${weather.weather.icon}@2x.png`}
+                src={`https://openweathermap.org/img/wn/${weather.weather.icon}@2x.png`}
                 style={{ height: 50, width: 50 }}
               />
             }
