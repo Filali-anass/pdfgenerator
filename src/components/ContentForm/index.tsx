@@ -171,6 +171,17 @@ export default function ContentFormComponent({
     }
   };
 
+  const dateFormatter = (date: string) => {
+    if (date === "") {
+      return format(new Date(), "yyyy-MM-dd");
+    }
+
+    try {
+      return format(parse(date, "dd-MM-yyyy", new Date()), "yyyy-MM-dd");
+    } catch (e) {
+      return date;
+    }
+  };
   return (
     <div className="w-full h-screen justify-center p-4">
       <div className="w-full gap-4">
@@ -209,10 +220,7 @@ export default function ContentFormComponent({
               name="date"
               id="date"
               type="date"
-              defaultValue={format(
-                parse(report.date, "dd-MM-yyyy", new Date()),
-                "yyyy-MM-dd"
-              )}
+              defaultValue={dateFormatter(report.date)}
               className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
               onChange={(e) => setDate(e.target.value)}
             />

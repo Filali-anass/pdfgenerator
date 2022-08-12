@@ -45,7 +45,7 @@ const initialState: DataType = {
   report: {
     projectId: "",
     userId: "",
-    date: "",
+    date: format(new Date(), "dd-MM-yyyy"),
     city: "",
     subject: "",
     sections: [],
