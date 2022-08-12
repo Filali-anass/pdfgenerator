@@ -80,8 +80,8 @@ const Section = ({
     )}
     <View>
       {sentences.map((sentence) => (
-        <View key={sentence}>
-          {sentence !== "" && (
+        <View key={sentence.uid}>
+          {sentence.value !== "" && (
             <View
               style={{
                 flexDirection: "row",
@@ -97,7 +97,7 @@ const Section = ({
                   marginTop: 10,
                 }}
               />
-              <Text style={{ paddingLeft: 10 }}>{sentence}</Text>
+              <Text style={{ paddingLeft: 10 }}>{sentence.value}</Text>
             </View>
           )}
         </View>

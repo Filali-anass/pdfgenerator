@@ -29,7 +29,7 @@ export function ReportAddEdit({
         <div className="flex w-full justify-center">
           <p>Disable Preview for better performance</p>
         </div>
-        <div className="flex justify-center items-center py-4">
+        <div className="flex justify-center items-center py-1">
           <div className="form-check form-switch">
             <input
               value={preview ? 1 : 0}
@@ -47,11 +47,7 @@ export function ReportAddEdit({
             </label>
           </div>
         </div>
-        <ContentFormComponent
-          cities={cities}
-          action={action}
-          preview={preview}
-        />
+        <ContentFormComponent cities={cities} action={action} />
       </div>
 
       <div className="col-span-1 h-full w-full">

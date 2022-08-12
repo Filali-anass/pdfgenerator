@@ -21,7 +21,7 @@ export function SentencesInput({
         type="text"
         name={`sentence-${index}-${indx}`}
         id={`sentence-${index}-${indx}`}
-        defaultValue={sentence}
+        defaultValue={sentence.value}
         className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
         onChange={(e) => {
           console.log(indx, index);
@@ -29,7 +29,7 @@ export function SentencesInput({
             {
               ...section,
               sentences: section.sentences.map((s, i) =>
-                i === indx ? e.target.value : s
+                i === indx ? { ...s, value: e.target.value } : s
               ),
             },
             section.uid

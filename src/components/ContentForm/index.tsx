@@ -15,11 +15,9 @@ import useProfileSlice from "../../store/useProfileSlice";
 export default function ContentFormComponent({
   cities,
   action,
-  preview,
 }: {
   cities: typeof CITIES;
   action: "ADD" | "EDIT";
-  preview: boolean;
 }) {
   const { query } = useRouter();
 
@@ -102,7 +100,7 @@ export default function ContentFormComponent({
               subject: report.subject,
               sections: report.sections.map((s) => ({
                 title: s.title,
-                sentences: s.sentences,
+                sentences: s.sentences.map((ss) => ss.value),
               })),
               pictures: report.pictures,
             },
@@ -134,7 +132,7 @@ export default function ContentFormComponent({
               subject: report.subject,
               sections: report.sections.map((s) => ({
                 title: s.title,
-                sentences: s.sentences,
+                sentences: s.sentences.map((ss) => ss.value),
               })),
               pictures: report.pictures,
             },
@@ -243,7 +241,7 @@ export default function ContentFormComponent({
           <button
             className="appearance-none rounded relative block w-full px-3 py-2 my-2 border border-gray-300 placeholder-gray-500 text-gray-900  focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
             onClick={() => {
-              addSection({ title: "", sentences: [""] });
+              addSection({ title: "", sentences: [] });
             }}
           >
             Ajouter une Section
@@ -277,17 +275,14 @@ export default function ContentFormComponent({
           ))}
         </div>
       </div>
-      {preview && (
-        <div className="flex w-full justify-end">
-          <button
-            onClick={handleSveReport}
-            className="px-4 py-2 bg-indigo-500 outline-none rounded text-white shadow-indigo-200 shadow-lg font-medium active:shadow-none active:scale-95 hover:bg-indigo-600 focus:bg-indigo-600 focus:ring-2 focus:ring-indigo-600 focus:ring-offset-2 disabled:bg-gray-400/80 disabled:shadow-none disabled:cursor-not-allowed transition-colors duration-200"
-          >
-            <p className="cursor-pointer">Enregistrer le Rapport</p>
-          </button>
-        </div>
-      )}
-      {/*  <a onClick={() => console.log(instance)}>LOG</a> */}
+      <div className="flex w-full justify-end">
+        <button
+          onClick={handleSveReport}
+          className="px-4 py-2 bg-indigo-500 outline-none rounded text-white shadow-indigo-200 shadow-lg font-medium active:shadow-none active:scale-95 hover:bg-indigo-600 focus:bg-indigo-600 focus:ring-2 focus:ring-indigo-600 focus:ring-offset-2 disabled:bg-gray-400/80 disabled:shadow-none disabled:cursor-not-allowed transition-colors duration-200"
+        >
+          <p className="cursor-pointer">Enregistrer le Rapport</p>
+        </button>
+      </div>
     </div>
   );
 }

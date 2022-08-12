@@ -2,6 +2,7 @@ import { SentencesInput } from "./SentencesInput";
 import React from "react";
 import useEditorSlice, { DataType } from "../../store/useEditorSlice";
 import { AiFillDelete } from "react-icons/ai";
+import { v4 as uuid } from "uuid";
 
 export default function SectionInputs({
   index,
@@ -55,7 +56,7 @@ export default function SectionInputs({
             </label>
           </div>
           {section.sentences.map((sentence, indx) => (
-            <div key={`${section.uid}-${Math.random()}`}>
+            <div key={`${section.uid}-${sentence.uid}`}>
               <SentencesInput
                 index={index}
                 indx={indx}
@@ -69,7 +70,13 @@ export default function SectionInputs({
               className="appearance-none rounded relative block w-full px-3 py-2 my-2 border border-gray-300 placeholder-gray-500 text-gray-900  focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
               onClick={() => {
                 editSection(
-                  { ...section, sentences: [...section.sentences, ""] },
+                  {
+                    ...section,
+                    sentences: [
+                      ...section.sentences,
+                      { value: "", uid: uuid() },
+                    ],
+                  },
                   section.uid
                 );
               }}

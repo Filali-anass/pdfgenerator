@@ -18,7 +18,7 @@ export type DataType = {
       uid?: string;
       _id?: string;
       title: string;
-      sentences: string[];
+      sentences: { value: string; uid?: string }[];
     }[];
     pictures: string[];
   };
@@ -76,7 +76,11 @@ const editorStore: (set: any) => DataType & DataMutators = (set) => ({
           date: report.date,
           city: report.city,
           subject: report.subject,
-          sections: report.sections.map((s) => ({ ...s, uid: s._id })),
+          sections: report.sections.map((s) => ({
+            ...s,
+            uid: s._id,
+            sentences: s.sentences.map((ss) => ({ value: ss, uid: uuid() })),
+          })),
           pictures: report.pictures,
         };
         draft.project = project;
