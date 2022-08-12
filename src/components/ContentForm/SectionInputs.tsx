@@ -1,11 +1,6 @@
 import { SentencesInput } from "./SentencesInput";
-import React, { useEffect } from "react";
-
-import { Widget } from "@uploadcare/react-widget";
+import React from "react";
 import useEditorSlice, { DataType } from "../../store/useEditorSlice";
-import { MyDocument } from "../PdfRenderComponent";
-import { usePDF } from "@react-pdf/renderer";
-import { useSession } from "next-auth/react";
 
 export default function SectionInputs({
   index,
@@ -26,7 +21,7 @@ export default function SectionInputs({
             htmlFor={`sectionTitle-${index}`}
             className="block text-sm font-medium text-gray-700"
           >
-            Title
+            Titre
           </label>
           <input
             type="text"
