@@ -1,10 +1,9 @@
-import create, { GetState, SetState } from "zustand";
+import create from "zustand";
 import { devtools, persist } from "zustand/middleware";
 
 import produce from "immer";
 import { IProject } from "../model/Project";
 import { v4 as uuid } from "uuid";
-import { SchemaTypeOptions } from "mongoose";
 import { IReport } from "../model/Report";
 
 export type DataType = {
@@ -23,7 +22,6 @@ export type DataType = {
     }[];
     pictures: string[];
   };
-  // name: string;
 };
 
 type DataMutators = {

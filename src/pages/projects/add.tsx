@@ -2,14 +2,14 @@ import React, { useEffect, useState } from "react";
 import { Field, Form, Formik } from "formik";
 import axios from "axios";
 import Router from "next/router";
-import { useSession } from "next-auth/react";
 import Image from "next/image";
+import useProfileSlice from "../../store/useProfileSlice";
 
 export default function AddProject() {
   const [name, setName] = useState("");
   const [image, setImage] = useState("");
   const [description, setDescription] = useState("");
-  const { data: session } = useSession();
+  const { profile } = useProfileSlice();
 
   const formSubmit = async (actions: any) => {
     actions.setSubmitting(false);
@@ -38,7 +38,7 @@ export default function AddProject() {
       {
         cloudName: "dlmkxe4ts",
         uploadPreset: "pdfgen",
-        folder: `pdfgen/${session?.user.name}`,
+        folder: `pdfgen/${profile?.name}/projects`,
         resourceType: "image",
         multiple: false,
       },
@@ -85,7 +85,7 @@ export default function AddProject() {
                   </div>
                 )}
               </Field>
-              <Field name="name">
+              <Field name="description">
                 {() => (
                   <div className="my-4">
                     <label htmlFor="name" className="text-sm px-2">
@@ -100,22 +100,22 @@ export default function AddProject() {
                   </div>
                 )}
               </Field>
-              <Field name="name">
+              <Field name="image">
                 {() => (
                   <div className="my-4">
-                    <label htmlFor="files" className="text-sm px-2">
+                    <label htmlFor="image" className="text-sm px-2">
                       Logo du Projet
                     </label>
                     <input
                       value={image}
-                      id="files"
-                      name="files"
+                      id="image"
+                      name="image"
                       required
                       className="h-[0.5px] p-[0px] appearance-none rounded relative block w-full focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                     ></input>
                     <button
                       type="button"
-                      id="files"
+                      id="image"
                       className="appearance-none rounded relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900  focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm"
                       onClick={openWidget}
                     >

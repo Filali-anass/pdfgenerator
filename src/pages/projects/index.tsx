@@ -27,7 +27,7 @@ export async function getServerSideProps(context: any) {
 }
 
 export default function ProjectsPage({ projects }: { projects: IProject[] }) {
-  const { data: session, status } = useSession();
+  const { status } = useSession();
 
   if (status === "loading") {
     return <p>Loading...</p>;

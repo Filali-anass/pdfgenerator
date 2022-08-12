@@ -3,14 +3,13 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import dbConnect from "../../../../lib/dbConnect";
 import Report, { IReport } from "../../../../model/Report";
 import { getSession } from "next-auth/react";
+import { z } from "zod";
 
 interface ResponseData {
   error?: string | object;
   message?: string;
   report?: IReport;
 }
-
-import { z } from "zod";
 
 const schema = z.object({
   report: z.object({

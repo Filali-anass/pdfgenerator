@@ -9,7 +9,7 @@ import {
   PDFViewer,
 } from "@react-pdf/renderer";
 import useEditorSlice, { DataType } from "../../store/useEditorSlice";
-import { useSession } from "next-auth/react";
+import useProfileSlice from "../../store/useProfileSlice";
 
 // Create styles
 const styles = StyleSheet.create({
@@ -298,14 +298,14 @@ export const MyDocument = ({
 // Create Document Component
 const PdfRenderComponent = ({}) => {
   const { report, project } = useEditorSlice();
-  const { data: session } = useSession();
+  const { profile } = useProfileSlice();
 
   return (
     <>
       <PDFViewer style={{ flex: 1 }} showToolbar>
         <MyDocument
           project={project}
-          session={session}
+          session={{ user: profile }}
           report={report}
         ></MyDocument>
       </PDFViewer>

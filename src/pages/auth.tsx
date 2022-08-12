@@ -1,8 +1,6 @@
 import Image from "next/image";
 import React, { useState } from "react";
-import type { NextPage } from "next";
 import {
-  useSession,
   signIn,
   getProviders,
   LiteralUnion,
@@ -13,6 +11,7 @@ import axios from "axios";
 import Router from "next/router";
 import { BuiltInProviderType } from "next-auth/providers";
 import loginPageImage from "../../public/assets/images/loginPageImage.png";
+
 const Auth = ({
   providers,
 }: Record<LiteralUnion<BuiltInProviderType, string>, ClientSafeProvider>) => {

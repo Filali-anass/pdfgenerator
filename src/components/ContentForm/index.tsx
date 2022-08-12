@@ -3,13 +3,13 @@ import React, { useEffect, useState } from "react";
 import useEditorSlice, { DataType } from "../../store/useEditorSlice";
 import { MyDocument } from "../PdfRenderComponent";
 import { usePDF } from "@react-pdf/renderer";
-import { useSession } from "next-auth/react";
 import SectionInputs from "./SectionInputs";
 import { CITIES } from "../../lib/data/cities";
 import Image from "next/image";
 import Router, { useRouter } from "next/router";
 import axios from "axios";
 import { AiFillDelete } from "react-icons/ai";
+import useProfileSlice from "../../store/useProfileSlice";
 
 // import { CloudinaryContext, Image as CloudinaryImage } from "cloudinary-react";
 export default function ContentFormComponent({
@@ -33,12 +33,12 @@ export default function ContentFormComponent({
     addPictures,
     deletePicture,
   } = useEditorSlice();
-  const { data: session } = useSession();
+  const { profile } = useProfileSlice();
   const [instance, updatePdf] = usePDF({
     document: (
       <MyDocument
         project={project}
-        session={session}
+        session={{ user: profile }}
         report={report}
       ></MyDocument>
     ),
@@ -50,7 +50,7 @@ export default function ContentFormComponent({
       {
         cloudName: "dlmkxe4ts",
         uploadPreset: "pdfgen",
-        folder: `pdfgen/${session?.user.name}`,
+        folder: `pdfgen/${profile?.name}/projects/${project?.name}`,
         resourceType: "image",
         multiple: true,
       },

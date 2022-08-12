@@ -1,5 +1,4 @@
 import { ReactNode } from "react";
-import Nav from "../Nav";
 import Meta from "../Meta";
 import { useRouter } from "next/router";
 import SideBar from "../SideBar";
@@ -11,9 +10,7 @@ interface LayoutProps {
 const Layout = ({ children }: LayoutProps) => {
   const { pathname } = useRouter();
   const { data: session } = useSession();
-
-  const noNavPaths = ["/auth", "/pdf"];
-
+  const noNavPaths = ["/auth"];
   const renderNav = session && !noNavPaths.includes(pathname);
 
   return (
