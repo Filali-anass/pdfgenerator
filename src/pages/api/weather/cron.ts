@@ -9,6 +9,7 @@ interface ResponseData {
   error?: string;
   msg?: string;
   weather?: any;
+  appid?: any;
 }
 
 export default async function handler(
@@ -23,7 +24,7 @@ export default async function handler(
   }
   const watherAppId = req.query.appid;
   if (watherAppId != "1867031257943895e9c93efec73a91be") {
-    return res.status(401).json({ msg: "NOT Authorized" });
+    return res.status(401).json({ msg: "NOT Authorized", appid: req.query });
   }
 
   await dbConnect();
