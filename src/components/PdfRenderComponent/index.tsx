@@ -9,7 +9,10 @@ import {
   PDFViewer,
 } from "@react-pdf/renderer";
 import useEditorSlice, { DataType } from "../../store/useEditorSlice";
+import { DataType as WeatherDataType } from "../../store/useWeatherStore";
 import useProfileSlice from "../../store/useProfileSlice";
+import useWeatherSlice from "../../store/useWeatherStore";
+import { format, parse } from "date-fns";
 
 // Create styles
 const styles = StyleSheet.create({
@@ -211,6 +214,99 @@ const ReportSubject = ({ subject }: { subject: string }) => {
   );
 };
 
+const WeatherComponent = ({
+  weather,
+}: {
+  weather: WeatherDataType["weather"];
+}) => {
+  return weather ? (
+    <View style={styles.section}>
+      <View
+        style={{
+          flexDirection: "row",
+          alignItems: "center",
+          paddingLeft: 10,
+        }}
+      >
+        <View
+          style={{
+            width: 8,
+            height: 8,
+            marginTop: 2,
+            backgroundColor: "#1f497e",
+            borderRadius: 50,
+          }}
+        />
+        <View style={{ flexDirection: "row" }}>
+          <Text style={{ paddingLeft: 10, color: "#1f497e" }}>Météo : </Text>
+        </View>
+      </View>
+      <View
+        style={{
+          flexDirection: "row",
+          justifyContent: "space-between",
+          paddingLeft: 10,
+          borderWidth: 1,
+          borderColor: "#1f497e",
+          padding: 10,
+          marginTop: 10,
+        }}
+      >
+        <View
+          style={{
+            flexDirection: "row",
+            alignItems: "center",
+            justifyContent: "center",
+          }}
+        >
+          <View style={{ marginHorizontal: 10 }}>
+            {
+              // eslint-disable-next-line jsx-a11y/alt-text
+              <Image
+                src={`http://openweathermap.org/img/wn/${weather.weather.icon}@2x.png`}
+                style={{ height: 50, width: 50 }}
+              />
+            }
+          </View>
+          <View
+            style={{
+              flexDirection: "row",
+              marginHorizontal: 10,
+            }}
+          >
+            <Text style={{ fontSize: 30, fontWeight: "bold" }}>
+              {Math.round(weather.main.temp)}
+            </Text>
+            <Text style={{ fontSize: 14 }}>°C</Text>
+          </View>
+          <View style={{ paddingHorizontal: 10 }}>
+            <Text style={{ fontSize: 12, color: "grey" }}>
+              Humidité: {weather.main.humidity}%
+            </Text>
+            <Text style={{ fontSize: 12, color: "grey" }}>
+              Vent: {weather.wind.speed} Km/h
+            </Text>
+          </View>
+        </View>
+        <View style={{ alignItems: "flex-end", justifyContent: "center" }}>
+          <Text style={{}}>{weather.cityName}</Text>
+          {/* <Text style={{ fontSize: 14, color: "grey" }}>
+            {format(
+              parse(weather.date, "dd-MM-yyyy", new Date()),
+              "yyyy-MM-dd"
+            )}
+          </Text> */}
+          <Text style={{ fontSize: 14, color: "grey" }}>
+            {weather.weather.description}
+          </Text>
+        </View>
+      </View>
+    </View>
+  ) : (
+    <></>
+  );
+};
+
 const DateAndLocation = ({ city, date }: { city: string; date: string }) => {
   return (
     <View
@@ -239,7 +335,8 @@ export const MyDocument = ({
   project,
   session,
   report,
-}: DataType & { session: any }) => (
+  weather,
+}: DataType & WeatherDataType & { session: any }) => (
   <PDFDocument>
     <Page size="A4" style={styles.body}>
       <Header
@@ -250,6 +347,7 @@ export const MyDocument = ({
       <DateAndLocation city={report.city} date={report.date} />
       <ReportTitle title={"COMPTE RENDU"} />
       <ReportSubject subject={report.subject} />
+      {weather && <WeatherComponent weather={weather} />}
       {report.sections.map((section, index) => (
         <Section key={section.title} section={section} />
       ))}
@@ -299,7 +397,7 @@ export const MyDocument = ({
 const PdfRenderComponent = ({}) => {
   const { report, project } = useEditorSlice();
   const { profile } = useProfileSlice();
-
+  const { weather } = useWeatherSlice();
   return (
     <>
       <PDFViewer style={{ flex: 1 }} showToolbar>
@@ -307,6 +405,7 @@ const PdfRenderComponent = ({}) => {
           project={project}
           session={{ user: profile }}
           report={report}
+          weather={weather}
         ></MyDocument>
       </PDFViewer>
     </>

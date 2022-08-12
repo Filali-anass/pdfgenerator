@@ -38,7 +38,7 @@ export default async function handler(
       const city = CITIES.find((city) => `${city.id}` === req.query.cityId);
       if (city) {
         const weatherResp = await axios.get(
-          `https://api.openweathermap.org/data/2.5/weather?lat=${city?.lat}&lon=${city?.lng}&appid=1867031257943895e9c93efec73a91be&units=metric`
+          `https://api.openweathermap.org/data/2.5/weather?lat=${city?.lat}&lon=${city?.lng}&appid=1867031257943895e9c93efec73a91be&units=metric&lang=fr`
         );
         weather = await Weather.create(
           new Weather({

@@ -11,6 +11,7 @@ import axios from "axios";
 import { AiFillDelete } from "react-icons/ai";
 import useProfileSlice from "../../store/useProfileSlice";
 import { format, parse } from "date-fns";
+import useWeatherSlice from "../../store/useWeatherStore";
 
 // import { CloudinaryContext, Image as CloudinaryImage } from "cloudinary-react";
 export default function ContentFormComponent({
@@ -33,6 +34,7 @@ export default function ContentFormComponent({
     deletePicture,
   } = useEditorSlice();
   const { profile } = useProfileSlice();
+  const { setWeather } = useWeatherSlice();
   const [instance, updatePdf] = usePDF({
     document: (
       <MyDocument
@@ -55,12 +57,13 @@ export default function ContentFormComponent({
         })
         .then(async (res) => {
           console.log(res);
+          setWeather(res?.data?.weather);
         })
         .catch((error: Error) => {
           console.log(error);
         });
     }
-  }, [report.city, report.date]);
+  }, [report.city, report.date, setWeather]);
 
   const openWidget = () => {
     // create the widget
