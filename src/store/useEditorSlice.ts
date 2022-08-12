@@ -5,6 +5,7 @@ import produce from "immer";
 import { IProject } from "../model/Project";
 import { v4 as uuid } from "uuid";
 import { IReport } from "../model/Report";
+import { format, parse } from "date-fns";
 
 export type DataType = {
   project?: IProject;
@@ -121,7 +122,10 @@ const editorStore: (set: any) => DataType & DataMutators = (set) => ({
   setDate: (date) => {
     set(
       produce((draft: DataType) => {
-        draft.report.date = date;
+        draft.report.date = format(
+          parse(date, "yyyy-MM-dd", new Date()),
+          "dd-MM-yyyy"
+        );
       })
     );
   },

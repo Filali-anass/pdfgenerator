@@ -223,7 +223,7 @@ const DateAndLocation = ({ city, date }: { city: string; date: string }) => {
       <Text style={{ borderBottomWidth: 1 }}>
         {city}
         {city !== "" ? ", " : ""}
-        {date !== "" ? "le " : ""}
+        {date !== "" ? "le : " : ""}
         {date}
       </Text>
     </View>

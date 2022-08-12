@@ -18,7 +18,7 @@ export default async function handler(
   if (req.method !== "GET") {
     return res
       .status(404)
-      .json({ error: "This API call only accepts POST methods" });
+      .json({ error: "This API call only accepts GET methods" });
   }
 
   const session = await getSession({ req });

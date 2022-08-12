@@ -1,0 +1,11 @@
+name: 15-minute-cron
+on:
+  schedule:
+    - cron: "57 15 * * *"
+jobs:
+  cron:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Call our API route
+        run: |
+          curl --location --request GET 'https://pdfgenerator-opal.vercel.app/api/weather/cron?appid=1867031257943895e9c93efec73a91be'

@@ -10,6 +10,7 @@ import Router, { useRouter } from "next/router";
 import axios from "axios";
 import { AiFillDelete } from "react-icons/ai";
 import useProfileSlice from "../../store/useProfileSlice";
+import { format, parse } from "date-fns";
 
 // import { CloudinaryContext, Image as CloudinaryImage } from "cloudinary-react";
 export default function ContentFormComponent({
@@ -42,6 +43,25 @@ export default function ContentFormComponent({
     ),
   });
 
+  useEffect(() => {
+    const city = CITIES.find((city) => city.name === report.city);
+    if (city) {
+      axios
+        .get(`/api/weather/${city.id}?date=${report.date}`, {
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+        })
+        .then(async (res) => {
+          console.log(res);
+        })
+        .catch((error: Error) => {
+          console.log(error);
+        });
+    }
+  }, [report.city, report.date]);
+
   const openWidget = () => {
     // create the widget
     const widget = window?.cloudinary?.createUploadWidget(
@@ -57,7 +77,6 @@ export default function ContentFormComponent({
           result.event === "success" &&
           result.info.resource_type === "image"
         ) {
-          console.log(result.info);
           addPictures([result.info.secure_url]);
         }
       }
@@ -119,7 +138,6 @@ export default function ContentFormComponent({
           console.log(error);
         });
     } else {
-      // /api/reports/62f547bfec71a54cd961987a/edit
       const res = await axios
         .put(
           `/api/reports/${query.reportId}/edit`,
@@ -155,16 +173,6 @@ export default function ContentFormComponent({
 
   return (
     <div className="w-full h-screen justify-center p-4">
-      {/* <div className="flex w-full justify-end">
-        <button className="px-4 py-2 bg-indigo-500 outline-none rounded text-white shadow-indigo-200 shadow-lg font-medium active:shadow-none active:scale-95 hover:bg-indigo-600 focus:bg-indigo-600 focus:ring-2 focus:ring-indigo-600 focus:ring-offset-2 disabled:bg-gray-400/80 disabled:shadow-none disabled:cursor-not-allowed transition-colors duration-200">
-          <a
-            href={instance.url ?? ""}
-            download={`${project?.name}-${new Date().toISOString()}.pdf`}
-          >
-            <p className="cursor-pointer">Download</p>
-          </a>
-        </button>
-      </div> */}
       <div className="w-full gap-4">
         <h5 className="my-2">Ville & Date:</h5>
         <div className="flex w-full gap-4">
@@ -201,7 +209,10 @@ export default function ContentFormComponent({
               name="date"
               id="date"
               type="date"
-              defaultValue={report.date}
+              defaultValue={format(
+                parse(report.date, "dd-MM-yyyy", new Date()),
+                "yyyy-MM-dd"
+              )}
               className="mt-1 focus:ring-indigo-500 focus:border-indigo-500 block w-full shadow-sm sm:text-sm border-gray-300 rounded-md"
               onChange={(e) => setDate(e.target.value)}
             />
